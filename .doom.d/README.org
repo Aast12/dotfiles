@@ -1,0 +1,141 @@
+#+title: DOOM Config
+#+PROPERTY: header-args :tangle config.el
+#+auto_tangle: t
+
+* Table Of Contents :toc:
+- [[#theme][Theme]]
+- [[#projectile][Projectile]]
+- [[#org-mode][Org mode]]
+  - [[#org-agenda][Org agenda]]
+  - [[#org-auto-tangle][org-auto-tangle]]
+- [[#avy][Avy]]
+- [[#cheatsheets][Cheatsheets]]
+
+* Theme
+
+#+begin_src elisp
+
+(setq doom-font (font-spec :family "Fira Code" :size 16)
+        doom-variable-pitch-font (font-spec :family "Fira Code" :size 16))
+
+(setq doom-theme 'doom-ayu-mirage)
+
+(setq doom-themes-treemacs-theme 'doom-ayu-mirage)
+
+#+end_src
+
+
+* Projectile
+
+#+begin_src elisp
+
+(setq projectile-project-search-path '("~/projs"))
+
+#+end_src
+
+
+* Org mode
+
+#+begin_src elisp
+
+(setq org-directory "~/org/")
+
+(after! org
+  (setq org-log-done 'time
+        org-log-done-with-time t
+        org-todo-keywords '((sequence "TODO(t/!)" "STARTED(s)" "WAITING(b)" "PROJ(p)" "IDEA(i)"
+                                        "|" "DONE(d)" "ABANDONED(a)" "DIGESTED(x)"))
+        org-todo-keyword-faces '(("TODO" :foreground "#8491A3" :weight bold)
+                                 ("STARTED" :foreground "#75d4fa" :weight bold)
+                                 ("WAITING" :foreground "#eeb044" :weight bold)
+                                 ("PROJ" :foreground "#ff934f" :weight bold)
+                                 ("IDEA" :foreground "#e5eafa" :weight bold)
+                                 ("DONE" :foreground "#d5ff80" :weight bold)
+                                 ("ABANDONED" :foreground "#d11149" :weight bold)
+                                 ("DIGESTED" :foreground "#857ba3" :weight bold)
+                                 )))
+
+#+end_src
+
+
+** Org agenda
+
+#+begin_src elisp
+
+(setq org-agenda-files '("~/org/agenda/"
+                         "~/org/grad/gradprep.org"))
+
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c l") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
+#+end_src
+
+*** org-super-agenda
+
+Custom groups to display in Org Agenda.
+
+#+begin_src elisp
+
+(use-package! org-super-agenda
+  :after org-agenda
+  :init
+  (setq org-super-agenda-groups '((:name "Today"
+                                         :time-grid t
+                                         :deadline today)
+                                  (:name "IMPORTANT"
+                                         :priority "A")
+                                  (:name "Overdue"
+                                         :deadline past)
+                                  (:name "Due soon"
+                                         :deadline future)))
+  :config
+  (org-super-agenda-mode))
+
+#+end_src
+
+*** org-fancy-priorities
+
+Custom priorities symbol for org tasks.
+
+#+begin_src elisp
+
+(use-package! org-fancy-priorities
+    :ensure t
+    :hook
+    (org-mode . org-fancy-priorities-mode)
+    :config
+    (setq org-fancy-priorities-list '(">>>" ">>" ">")))
+
+#+end_src
+
+** org-auto-tangle
+
+#+begin_src elisp
+
+(use-package org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode)
+  :config
+  (setq org-auto-tangle-defatult t))
+
+#+end_src
+
+* Avy
+
+#+begin_src elisp
+
+(setq avy-all-windows t)
+
+#+end_src
+
+
+* Cheatsheets
+
+`whic-key` shows available keybindings during typing. The current delay to show the popup is set to 0.5 seconds (default of 1).
+
+#+begin_src elisp
+
+(setq which-key-idle-delay 0.5)
+
+#+end_src
