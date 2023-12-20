@@ -53,3 +53,5 @@
 (package! org-super-agenda)
 (package! org-fancy-priorities)
 (package! org-auto-tangle)
+(package! org-modern)
+(package! org-roam)
