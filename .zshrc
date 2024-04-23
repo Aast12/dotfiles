@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/aast/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 fpath+=$HOME/.zsh/pure
 
@@ -125,14 +125,14 @@ bindkey "\e[1;3C" forward-word # ⌥→
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-if [ -e /Users/aast/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/aast/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-[ -f "/Users/aast/.ghcup/env" ] && source "/Users/aast/.ghcup/env" # ghcup-env
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-export ZSH_DISABLE_COMPFIX=trueexport PATH="/Users/aast/.deta/bin:$PATH"
+export ZSH_DISABLE_COMPFIX=trueexport PATH="$HOME/.deta/bin:$PATH"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
@@ -146,23 +146,25 @@ export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"
 export PATH=$PATH:$HOME/opt/anaconda3/bin
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/aast/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/Users/aast/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/aast/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/aast/anaconda3/bin:$PATH"
+        export PATH="$HOME/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# export PATH="$HOME/anaconda3/lib:$PATH"
+# export DYLD_LIBRARY_PATH="$HOME/anaconda3/lib:$DYLD_LIBRARY_PATH"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
-export PATH="/Users/aast/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
@@ -176,3 +178,23 @@ eval "$(zoxide init zsh)"
 export PATH="$HOME/.emacs.d/bin:$PATH"
 alias em='/opt/homebrew/bin/emacsclient -c -a emacs'
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+sc_proj() {
+	cargo new ex$1-492253-sanchez-torres-andres-alam --vcs none
+}
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+export PATH="$PATH:$HOME/bin"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
