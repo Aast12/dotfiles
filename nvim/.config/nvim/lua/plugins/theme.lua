@@ -62,11 +62,16 @@ return {
       })
     end,
   },
-  { "Shatur/neovim-ayu", opts = {
-    mirage = true,
-    terminal = true,
-    overrides = {},
-  } },
+  {
+    "Shatur/neovim-ayu",
+    config = function()
+      require("ayu").setup({
+        mirage = false,
+        terminal = true,
+        overrides = {},
+      })
+    end,
+  },
   { "LazyVim/LazyVim", opts = {
     colorscheme = "ayu-mirage",
   } },

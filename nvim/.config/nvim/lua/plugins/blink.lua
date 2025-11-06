@@ -12,5 +12,10 @@ return {
     keymap = {
       preset = "super-tab",
     },
+    sources = {
+      per_filetype = {
+        codecompanion = { "codecompanion" },
+      },
+    },
   },
 }
