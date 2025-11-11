@@ -12,3 +12,12 @@ brew install stow
 ```
 stow nvim starship ...
 ```
+
+
+---
+
+Install tmux conf
+
+```
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
