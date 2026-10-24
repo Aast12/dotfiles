@@ -16,13 +16,13 @@ after-startup-command = []
 # window back to the workspace we came from and return to it. The lock stops the
 # switch back from re-triggering this hook.
 exec-on-workspace-change = ['/bin/bash', '-c', '''
-  w=$(/opt/homebrew/bin/aerospace list-windows --focused --format "%{window-id}|%{app-bundle-id}|%{window-title}") || exit 0
+  w=$(aerospace list-windows --focused --format "%{window-id}|%{app-bundle-id}|%{window-title}") || exit 0
   [ "${w#*|}" = "com.kagi.kagimacOS|Orion Preview" ] || exit 0
   lock="${TMPDIR:-/tmp}/aerospace-orion-preview.lock"
   mkdir "$lock" 2>/dev/null || exit 0
   trap 'sleep 0.5; rmdir "$lock"' EXIT
-  /opt/homebrew/bin/aerospace move-node-to-workspace --window-id "${w%%|*}" "$AEROSPACE_PREV_WORKSPACE"
-  /opt/homebrew/bin/aerospace focus --window-id "${w%%|*}"
+  aerospace move-node-to-workspace --window-id "${w%%|*}" "$AEROSPACE_PREV_WORKSPACE"
+  aerospace focus --window-id "${w%%|*}"
 ''']
 
 # Start AeroSpace at login
