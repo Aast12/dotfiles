@@ -18,18 +18,19 @@ after-login-command = []
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = []
 
-# Orion keeps a hidden "Orion Preview" window (link previews, popups) on whatever
-# workspace it was created on. When it grabs focus, AeroSpace jumps there. Send the
-# window back to the workspace we came from and return to it. The lock stops the
-# switch back from re-triggering this hook.
+# Orion keeps a hidden helper window ("Orion Preview", sometimes untitled) for link
+# previews and popups. When Orion shows it, AeroSpace jumps to whatever workspace the
+# window sits on. Keep it on the focused workspace so there is nothing to jump to.
+# This only moves that window; it never changes focus or workspace.
 exec-on-workspace-change = ['/bin/bash', '-c', '''
-  w=$(aerospace list-windows --focused --format "%{window-id}|%{app-bundle-id}|%{window-title}") || exit 0
-  [ "${w#*|}" = "com.kagi.kagimacOS|Orion Preview" ] || exit 0
-  lock="${TMPDIR:-/tmp}/aerospace-orion-preview.lock"
-  mkdir "$lock" 2>/dev/null || exit 0
-  trap 'sleep 0.5; rmdir "$lock"' EXIT
-  aerospace move-node-to-workspace --window-id "${w%%|*}" "$AEROSPACE_PREV_WORKSPACE"
-  aerospace focus --window-id "${w%%|*}"
+  aerospace list-windows --monitor all --app-bundle-id com.kagi.kagimacOS \
+      --format "%{window-id}|%{window-layout}|%{workspace}|%{window-title}" |
+    while IFS='|' read -r id layout ws title; do
+      [ "$layout" = floating ] && [ "$ws" != "$AEROSPACE_FOCUSED_WORKSPACE" ] || continue
+      case "$title" in
+        "Orion Preview" | "") aerospace move-node-to-workspace --window-id "$id" "$AEROSPACE_FOCUSED_WORKSPACE" ;;
+      esac
+    done
 ''']
 
 # Start AeroSpace at login
