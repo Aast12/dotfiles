@@ -18,21 +18,6 @@ after-login-command = []
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = []
 
-# Orion keeps a hidden helper window ("Orion Preview", sometimes untitled) for link
-# previews and popups. When Orion shows it, AeroSpace jumps to whatever workspace the
-# window sits on. Keep it on the focused workspace so there is nothing to jump to.
-# This only moves that window; it never changes focus or workspace.
-exec-on-workspace-change = ['/bin/bash', '-c', '''
-  aerospace list-windows --monitor all --app-bundle-id com.kagi.kagimacOS \
-      --format "%{window-id}|%{window-layout}|%{workspace}|%{window-title}" |
-    while IFS='|' read -r id layout ws title; do
-      [ "$layout" = floating ] && [ "$ws" != "$AEROSPACE_FOCUSED_WORKSPACE" ] || continue
-      case "$title" in
-        "Orion Preview" | "") aerospace move-node-to-workspace --window-id "$id" "$AEROSPACE_FOCUSED_WORKSPACE" ;;
-      esac
-    done
-''']
-
 # Start AeroSpace at login
 start-at-login = true
 
